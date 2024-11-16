@@ -4,21 +4,33 @@ import com.polstat.pembelajaran_mandiri_ppk.dto.StatusPertemuanDTO;
 import com.polstat.pembelajaran_mandiri_ppk.entity.StatusPertemuan;
 
 public class StatusPertemuanMapper {
-    public static StatusPertemuanDTO toDTO(StatusPertemuan statusPertemuan) {
-        if (statusPertemuan == null) return null;
-        StatusPertemuanDTO dto = new StatusPertemuanDTO();
-        dto.setId(statusPertemuan.getId());
-        dto.setMahasiswaId(statusPertemuan.getMahasiswa().getId());
-        dto.setPertemuanId(statusPertemuan.getPertemuan().getId());
-        dto.setStatusMateri(statusPertemuan.getStatusMateri());
-        dto.setTanggalStatusMateri(statusPertemuan.getTanggalStatusMateri());
-        dto.setLinkPengerjaanPraktikum(statusPertemuan.getLinkPengerjaanPraktikum());
-        dto.setStatusPengumpulan(statusPertemuan.getStatusPengumpulan());
-        dto.setTanggalStatusPengumpulan(statusPertemuan.getTanggalStatusPengumpulan());
-        dto.setSkorPraktikum(statusPertemuan.getSkorPraktikum());
-        dto.setStatusKuis(statusPertemuan.getStatusKuis());
-        dto.setTanggalStatusKuis(statusPertemuan.getTanggalStatusKuis());
-        dto.setSkorKuis(statusPertemuan.getSkorKuis());
-        return dto;
+    public static StatusPertemuanDTO toDTO(StatusPertemuan status) {
+        return StatusPertemuanDTO.builder()
+                .id(status.getId())
+                .mahasiswaId(status.getMahasiswa().getId())
+                .pertemuanId(status.getPertemuan().getId())
+                .statusMateri(status.getStatusMateri())
+                .tanggalStatusMateri(status.getTanggalStatusMateri())
+                .linkPengerjaanPraktikum(status.getLinkPengerjaanPraktikum())
+                .statusPengumpulan(status.getStatusPengumpulan())
+                .tanggalStatusPengumpulan(status.getTanggalStatusPengumpulan())
+                .skorPraktikum(status.getSkorPraktikum())
+                .statusKuis(status.getStatusKuis())
+                .tanggalStatusKuis(status.getTanggalStatusKuis())
+                .skorKuis(status.getSkorKuis())
+                .build();
+    }
+
+    public static StatusPertemuan toEntity(StatusPertemuanDTO dto, StatusPertemuan status) {
+        status.setStatusMateri(dto.getStatusMateri());
+        status.setTanggalStatusMateri(dto.getTanggalStatusMateri());
+        status.setLinkPengerjaanPraktikum(dto.getLinkPengerjaanPraktikum());
+        status.setStatusPengumpulan(dto.getStatusPengumpulan());
+        status.setTanggalStatusPengumpulan(dto.getTanggalStatusPengumpulan());
+        status.setSkorPraktikum(dto.getSkorPraktikum());
+        status.setStatusKuis(dto.getStatusKuis());
+        status.setTanggalStatusKuis(dto.getTanggalStatusKuis());
+        status.setSkorKuis(dto.getSkorKuis());
+        return status;
     }
 }
