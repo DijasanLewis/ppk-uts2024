@@ -1,9 +1,9 @@
 package com.polstat.pembelajaran_mandiri_ppk.service;
 
+import java.util.List;
+
 import com.polstat.pembelajaran_mandiri_ppk.dto.StatusPertemuanDTO;
 import com.polstat.pembelajaran_mandiri_ppk.entity.User;
-
-import java.util.List;
 
 public interface StatusPertemuanService {
     StatusPertemuanDTO updateStatus(StatusPertemuanDTO statusPertemuanDTO, Long mahasiswaId);

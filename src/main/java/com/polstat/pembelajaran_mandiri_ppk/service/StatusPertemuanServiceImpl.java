@@ -1,18 +1,20 @@
 package com.polstat.pembelajaran_mandiri_ppk.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.polstat.pembelajaran_mandiri_ppk.dto.StatusPertemuanDTO;
 import com.polstat.pembelajaran_mandiri_ppk.entity.Pertemuan;
 import com.polstat.pembelajaran_mandiri_ppk.entity.StatusPertemuan;
 import com.polstat.pembelajaran_mandiri_ppk.entity.User;
 import com.polstat.pembelajaran_mandiri_ppk.mapper.StatusPertemuanMapper;
-import com.polstat.pembelajaran_mandiri_ppk.repository.StatusPertemuanRepository;
 import com.polstat.pembelajaran_mandiri_ppk.repository.PertemuanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.polstat.pembelajaran_mandiri_ppk.repository.StatusPertemuanRepository;
+import com.polstat.pembelajaran_mandiri_ppk.repository.UserRepository;
 
 @Service
 public class StatusPertemuanServiceImpl implements StatusPertemuanService {
@@ -26,13 +28,16 @@ public class StatusPertemuanServiceImpl implements StatusPertemuanService {
     @Autowired
     private PertemuanRepository pertemuanRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public StatusPertemuanDTO updateStatus(StatusPertemuanDTO statusPertemuanDTO, Long mahasiswaId) {
+    public StatusPertemuanDTO updateStatus(StatusPertemuanDTO statusPertemuanDTO, Long userId) {
         StatusPertemuan status = statusPertemuanRepository.findById(statusPertemuanDTO.getId())
                 .orElseThrow(() -> new RuntimeException("StatusPertemuan not found with ID: " + statusPertemuanDTO.getId()));
 
-        // Verifikasi bahwa mahasiswa yang sedang login adalah pemilik status
-        if (!status.getMahasiswa().getId().equals(mahasiswaId)) {
+        // Verifikasi bahwa pengguna yang sedang login adalah pemilik status atau dosen
+        if (!status.getMahasiswa().getId().equals(userId) && !isUserDosen(userId)) {
             throw new RuntimeException("You are not allowed to update this status");
         }
 
@@ -52,11 +57,22 @@ public class StatusPertemuanServiceImpl implements StatusPertemuanService {
             status.setStatusKuis(statusPertemuanDTO.getStatusKuis());
             status.setTanggalStatusKuis(LocalDateTime.now());
         }
+        if (statusPertemuanDTO.getSkorPraktikum() != null) {
+            status.setSkorPraktikum(statusPertemuanDTO.getSkorPraktikum());
+        }
+        if (statusPertemuanDTO.getSkorKuis() != null) {
+            status.setSkorKuis(statusPertemuanDTO.getSkorKuis());
+        }
 
         status = statusPertemuanRepository.save(status);
         return StatusPertemuanMapper.toDTO(status);
     }
 
+    private boolean isUserDosen(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        return "DOSEN".equals(user.getRole());
+    }
 
     @Override
     public void createStatusForNewMahasiswa(User mahasiswa) {
@@ -72,7 +88,6 @@ public class StatusPertemuanServiceImpl implements StatusPertemuanService {
             statusPertemuanRepository.save(status);
         }
     }
-
 
     @Override
     public List<StatusPertemuanDTO> getStatusByMahasiswa(Long mahasiswaId) {

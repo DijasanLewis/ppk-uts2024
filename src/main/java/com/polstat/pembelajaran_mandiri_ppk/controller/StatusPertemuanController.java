@@ -2,6 +2,8 @@ package com.polstat.pembelajaran_mandiri_ppk.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/api/status-pertemuan")
 public class StatusPertemuanController {
 
+    private static final Logger logger = LoggerFactory.getLogger(StatusPertemuanController.class);
+
     @Autowired
     private StatusPertemuanService statusPertemuanService;
 
@@ -34,8 +38,8 @@ public class StatusPertemuanController {
     @PutMapping
     public ResponseEntity<StatusPertemuanDTO> updateStatus(
             @RequestBody StatusPertemuanDTO statusPertemuanDTO,
-            @RequestParam Long mahasiswaId) {
-        return ResponseEntity.ok(statusPertemuanService.updateStatus(statusPertemuanDTO, mahasiswaId));
+            @RequestParam Long userId) {
+        return ResponseEntity.ok(statusPertemuanService.updateStatus(statusPertemuanDTO, userId));
     }
 
     @Operation(summary = "Mengambil status pertemuan berdasarkan ID mahasiswa.")
@@ -55,7 +59,10 @@ public class StatusPertemuanController {
     })
     @GetMapping("/pertemuan/{id}")
     public ResponseEntity<List<StatusPertemuanDTO>> getStatusByPertemuan(@PathVariable Long id) {
-        return ResponseEntity.ok(statusPertemuanService.getStatusByPertemuan(id));
+        logger.info("Dosen accessing status pertemuan for pertemuan ID: {}", id);
+        List<StatusPertemuanDTO> statusList = statusPertemuanService.getStatusByPertemuan(id);
+        logger.info("Returning {} status entries for pertemuan ID: {}", statusList.size(), id);
+        return ResponseEntity.ok(statusList);
     }
 
     @Operation(summary = "Mengambil semua status pertemuan.")
