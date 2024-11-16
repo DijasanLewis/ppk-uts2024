@@ -1,19 +1,18 @@
 package com.polstat.pembelajaran_mandiri_ppk.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.polstat.pembelajaran_mandiri_ppk.dto.UserDTO;
 import com.polstat.pembelajaran_mandiri_ppk.entity.User;
 import com.polstat.pembelajaran_mandiri_ppk.mapper.UserMapper;
 import com.polstat.pembelajaran_mandiri_ppk.repository.UserRepository;
-import com.polstat.pembelajaran_mandiri_ppk.repository.PertemuanRepository;
-import com.polstat.pembelajaran_mandiri_ppk.repository.StatusPertemuanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,6 +29,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private StatusPertemuanService statusPertemuanService;
 
+    @Override
     public UserDTO registerUser(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
@@ -79,5 +79,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(userMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId));
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

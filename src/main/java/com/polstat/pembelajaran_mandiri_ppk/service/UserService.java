@@ -1,8 +1,8 @@
 package com.polstat.pembelajaran_mandiri_ppk.service;
 
-import com.polstat.pembelajaran_mandiri_ppk.dto.UserDTO;
-
 import java.util.List;
+
+import com.polstat.pembelajaran_mandiri_ppk.dto.UserDTO;
 
 public interface UserService {
     UserDTO registerUser(UserDTO userDTO);
@@ -10,4 +10,5 @@ public interface UserService {
     UserDTO updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
     List<UserDTO> getAllUsers();
+    void changePassword(Long userId, String oldPassword, String newPassword);
 }
