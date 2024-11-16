@@ -2,8 +2,12 @@ package com.polstat.pembelajaran_mandiri_ppk.service;
 
 import com.polstat.pembelajaran_mandiri_ppk.dto.PertemuanDTO;
 import com.polstat.pembelajaran_mandiri_ppk.entity.Pertemuan;
+import com.polstat.pembelajaran_mandiri_ppk.entity.StatusPertemuan;
+import com.polstat.pembelajaran_mandiri_ppk.entity.User;
 import com.polstat.pembelajaran_mandiri_ppk.mapper.PertemuanMapper;
 import com.polstat.pembelajaran_mandiri_ppk.repository.PertemuanRepository;
+import com.polstat.pembelajaran_mandiri_ppk.repository.StatusPertemuanRepository;
+import com.polstat.pembelajaran_mandiri_ppk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +23,30 @@ public class PertemuanServiceImpl implements PertemuanService {
     @Autowired
     private PertemuanMapper pertemuanMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private StatusPertemuanRepository statusPertemuanRepository;
+
     @Override
     public PertemuanDTO createPertemuan(PertemuanDTO pertemuanDTO) {
         Pertemuan pertemuan = pertemuanMapper.toEntity(pertemuanDTO);
         pertemuan = pertemuanRepository.save(pertemuan);
+
+        // Tambahkan status pertemuan untuk semua mahasiswa
+        List<User> mahasiswaList = userRepository.findAllByRole("MAHASISWA");
+        for (User mahasiswa : mahasiswaList) {
+            StatusPertemuan status = StatusPertemuan.builder()
+                    .mahasiswa(mahasiswa)
+                    .pertemuan(pertemuan)
+                    .statusMateri("Belum")
+                    .statusPengumpulan("Belum")
+                    .statusKuis("Belum")
+                    .build();
+            statusPertemuanRepository.save(status);
+        }
+
         return pertemuanMapper.toDTO(pertemuan);
     }
 

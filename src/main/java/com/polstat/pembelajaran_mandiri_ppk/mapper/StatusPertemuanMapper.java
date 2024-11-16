@@ -2,7 +2,9 @@ package com.polstat.pembelajaran_mandiri_ppk.mapper;
 
 import com.polstat.pembelajaran_mandiri_ppk.dto.StatusPertemuanDTO;
 import com.polstat.pembelajaran_mandiri_ppk.entity.StatusPertemuan;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StatusPertemuanMapper {
     public static StatusPertemuanDTO toDTO(StatusPertemuan status) {
         return StatusPertemuanDTO.builder()

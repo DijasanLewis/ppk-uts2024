@@ -16,9 +16,12 @@ public class StatusPertemuanController {
     private StatusPertemuanService statusPertemuanService;
 
     @PutMapping
-    public ResponseEntity<StatusPertemuanDTO> updateStatus(@RequestBody StatusPertemuanDTO statusPertemuanDTO) {
-        return ResponseEntity.ok(statusPertemuanService.updateStatus(statusPertemuanDTO));
+    public ResponseEntity<StatusPertemuanDTO> updateStatus(
+            @RequestBody StatusPertemuanDTO statusPertemuanDTO,
+            @RequestParam Long mahasiswaId) {
+        return ResponseEntity.ok(statusPertemuanService.updateStatus(statusPertemuanDTO, mahasiswaId));
     }
+
 
     @GetMapping("/mahasiswa/{id}")
     public ResponseEntity<List<StatusPertemuanDTO>> getStatusByMahasiswa(@PathVariable Long id) {

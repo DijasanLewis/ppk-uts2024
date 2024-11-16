@@ -14,4 +14,5 @@ public class UserDTO {
     private String nidn;
     private String nim;
     private String kelas;
+    private String password;
 }

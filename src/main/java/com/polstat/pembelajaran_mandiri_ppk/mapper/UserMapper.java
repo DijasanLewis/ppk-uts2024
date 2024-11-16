@@ -15,6 +15,7 @@ public class UserMapper {
                 .nim(user.getNim())
                 .kelas(user.getKelas())
                 .namaLengkap(user.getNamaLengkap())
+                .password(user.getPassword())
                 .build();
     }
 
@@ -27,6 +28,7 @@ public class UserMapper {
                 .nim(dto.getNim())
                 .kelas(dto.getKelas())
                 .namaLengkap(dto.getNamaLengkap())
+                .password(dto.getPassword())
                 .build();
     }
 }
