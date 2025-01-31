@@ -11,5 +11,4 @@ public interface UserService {
     void deleteUser(Long id);
     List<UserDTO> getAllUsers();
     void changePassword(Long userId, String oldPassword, String newPassword);
-    UserDTO getCurrentUserProfile(String email);
 }

@@ -93,4 +93,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
+    @Override
+    public UserDTO getCurrentUserProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email: " + email));
+        return userMapper.toDTO(user);
+    }
 }
