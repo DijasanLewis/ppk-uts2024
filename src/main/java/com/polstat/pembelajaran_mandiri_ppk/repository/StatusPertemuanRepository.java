@@ -11,4 +11,5 @@ import com.polstat.pembelajaran_mandiri_ppk.entity.User;
 public interface StatusPertemuanRepository extends JpaRepository<StatusPertemuan, Long> {
     List<StatusPertemuan> findByMahasiswa(User mahasiswa);
     List<StatusPertemuan> findByPertemuan(Pertemuan pertemuan);
+    void deleteByPertemuan(Pertemuan pertemuan);
 }
