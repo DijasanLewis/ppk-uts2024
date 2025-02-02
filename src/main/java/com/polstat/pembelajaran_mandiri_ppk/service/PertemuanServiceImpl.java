@@ -40,6 +40,7 @@ public class PertemuanServiceImpl implements PertemuanService {
         for (User mahasiswa : mahasiswaList) {
             StatusPertemuan status = StatusPertemuan.builder()
                     .mahasiswa(mahasiswa)
+                    .namaLengkapMahasiswa(mahasiswa.getNamaLengkap())
                     .pertemuan(pertemuan)
                     .statusMateri("Belum")
                     .statusPengumpulan("Belum")

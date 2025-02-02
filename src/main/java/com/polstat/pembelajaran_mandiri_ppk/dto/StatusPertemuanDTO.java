@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class StatusPertemuanDTO {
     private Long id;
     private Long mahasiswaId;
+    private String namaLengkapMahasiswa;
     private Long pertemuanId;
     private String statusMateri;
     private LocalDateTime tanggalStatusMateri;

@@ -80,6 +80,7 @@ public class StatusPertemuanServiceImpl implements StatusPertemuanService {
         for (Pertemuan pertemuan : pertemuanList) {
             StatusPertemuan status = StatusPertemuan.builder()
                     .mahasiswa(mahasiswa)
+                    .namaLengkapMahasiswa(mahasiswa.getNamaLengkap())
                     .pertemuan(pertemuan)
                     .statusMateri("Belum")
                     .statusPengumpulan("Belum")

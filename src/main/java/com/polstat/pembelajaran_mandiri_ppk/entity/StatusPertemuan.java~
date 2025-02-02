@@ -23,9 +23,6 @@ public class StatusPertemuan {
     @JoinColumn(name = "mahasiswa_id", nullable = false)
     private User mahasiswa;
 
-    @Column(nullable = false)
-    private String namaLengkapMahasiswa;
-
     // Relasi ManyToOne dengan entitas Pertemuan, menghubungkan ke kolom pertemuan_id
     @ManyToOne
     @JoinColumn(name = "pertemuan_id", nullable = false)

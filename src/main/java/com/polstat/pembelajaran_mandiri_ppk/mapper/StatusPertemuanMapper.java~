@@ -10,7 +10,7 @@ public class StatusPertemuanMapper {
         return StatusPertemuanDTO.builder()
                 .id(status.getId())
                 .mahasiswaId(status.getMahasiswa().getId())
-                .namaLengkapMahasiswa(status.getMahasiswa().getNamaLengkap())
+                .namaLengkapMahasiswa(status.getMahasiswa().getNamalengkap())
                 .pertemuanId(status.getPertemuan().getId())
                 .statusMateri(status.getStatusMateri())
                 .tanggalStatusMateri(status.getTanggalStatusMateri())
